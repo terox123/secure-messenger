@@ -9,7 +9,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * Tiny, dependency-free Java 8 relay.
+ * Tiny, dependency-free Java 25 relay.
  * Message bodies are opaque ciphertext.
  */
 public final class MessengerServer {
@@ -128,6 +128,8 @@ public final class MessengerServer {
                                     .append(esc(m.get("room")))
                                     .append("\",\"sender\":\"")
                                     .append(esc(m.get("sender")))
+                                    .append("\",\"senderId\":\"")
+                                    .append(esc(m.get("senderId")))
                                     .append("\",\"iv\":\"")
                                     .append(esc(m.get("iv")))
                                     .append("\",\"ciphertext\":\"")
@@ -169,6 +171,8 @@ public final class MessengerServer {
 
                     if (f.get("room") == null
                             || f.get("sender") == null
+                            || f.get("senderId") == null
+                            || f.get("senderId").length() > 80
                             || f.get("iv") == null
                             || f.get("ciphertext") == null
                             || f.get("ciphertext").length() > 10000) {
@@ -182,6 +186,7 @@ public final class MessengerServer {
                     m.put("id", UUID.randomUUID().toString());
                     m.put("room", f.get("room"));
                     m.put("sender", f.get("sender"));
+                    m.put("senderId", f.get("senderId"));
                     m.put("iv", f.get("iv"));
                     m.put("ciphertext", f.get("ciphertext"));
 
